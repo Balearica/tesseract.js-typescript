@@ -1,14 +1,10 @@
 import { createWorker } from 'tesseract.js';
 
-const worker = createWorker({
-  logger: (m) => console.log(m),
-});
-
 (async () => {
-  await worker.load();
-  await worker.loadLanguage('eng');
-  await worker.initialize('eng');
-  const { data: { text } } = await worker.recognize('https://tesseract.projectnaptha.com/img/eng_bw.png');
-  console.log(text);
+  const worker = await createWorker('eng', 1, {
+    logger: (m) => console.log(m),
+  });
+  const ret = await worker.recognize('https://tesseract.projectnaptha.com/img/eng_bw.png');
+  console.log(ret.data.text);
   await worker.terminate();
 })();
